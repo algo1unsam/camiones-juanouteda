@@ -1,0 +1,39 @@
+import transportes.*
+import cosas.*
+import deposito.*
+import ruta.*
+
+
+
+test "•	Knight Rider: pesa 500 kilos y su nivel de peligrosidad es 10 puntos." {
+	assert.equals(500, knightRider.peso())
+	assert.equals(10, knightRider.nivelPeligrosidad())
+}
+
+test "•	Bumblebee: pesa 800 kilos y su nivel de peligrosidad es 15 si está transformado en auto o 30 si está en su forma de robot." {
+	assert.equals(800, bumbleBee.peso())
+	bumbleBee.transformacion(auto)
+	assert.equals(15, bumbleBee.nivelPeligrosidad())
+	bumbleBee.transformacion(robot)
+	assert.equals(30, bumbleBee.nivelPeligrosidad())
+}
+test "Peso Paquete de Ladrillos con 20 ladrillos = 40"
+{
+	paqueteLadrillos.ladrillos(20)
+	assert.equals(40, paqueteLadrillos.peso())
+}
+test "•	cargarle una cosa al camion"{
+	camion.cargar(knightRider)
+	assert.equals([knightRider], camion.carga())
+}
+
+test "•	descargarle una cosa"{
+	camion.descargar(knightRider)
+	assert.equals([], camion.carga())
+}
+
+test "Camion, si tiene cargado el paquete de ladrillos."{
+	camion.cargar(knightRider)
+	assert.notThat(camion.tenesCargado(paqueteLadrillos))
+	
+}
