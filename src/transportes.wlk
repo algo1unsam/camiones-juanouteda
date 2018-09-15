@@ -1,8 +1,9 @@
 import ruta.*
 import cosas.*
+import deposito.*
 
 object camion {
-	var property carga = []
+	var carga = []
 	var property cargaMaxima = 1000
 	
 	
@@ -24,10 +25,10 @@ object camion {
 	
 	method tenesCargado(unaCosa){
 		
-		carga.contains(unaCosa)
+	return	carga.contains(unaCosa)
 	}
 	
-	method cargaActual(){
+	method pesoActual(){
 		
 	return	carga.sum{unaCosa=>unaCosa.peso()}
 		
@@ -35,12 +36,12 @@ object camion {
 	
 	method cargaDisponible(){
 		
-	return cargaMaxima - self.cargaActual()
+	return cargaMaxima - self.pesoActual()
 	}
 	
 	method acepta(unaCosa){
 		
-		return self.cargaActual() + unaCosa.peso() < cargaMaxima 
+		return self.pesoActual() + unaCosa.peso() < cargaMaxima 
 	}
 	
 	method puedeCircular(){
@@ -52,7 +53,7 @@ object camion {
 
 object motoneta{
 	
-	var property carga =[]
+	var carga =[]
 	var limitePeligrosidad = 5
 	const property cargaMaxima = 100
 	
@@ -64,11 +65,16 @@ object motoneta{
 	
 	method acepta(unaCosa){
 		
-		return (unaCosa.nivelPeligrosidad() < limitePeligrosidad) and (unaCosa.peso() + self.cargaActual()< cargaMaxima) 
+		return (unaCosa.nivelPeligrosidad() < limitePeligrosidad) and (unaCosa.peso() + self.pesoActual()< cargaMaxima) 
 	}
-	method cargaActual(){
+	method pesoActual(){
 		
 	return	carga.sum{unaCosa=>unaCosa.peso()}
 		
 	}
+	method tenesCargado(unaCosa){
+		
+	return	carga.contains(unaCosa)
+	}
+	
 }

@@ -24,16 +24,110 @@ test "Peso Paquete de Ladrillos con 20 ladrillos = 40"
 }
 test "•	cargarle una cosa al camion"{
 	camion.cargar(knightRider)
-	assert.equals([knightRider], camion.carga())
+	assert.that(camion.tenesCargado(knightRider))
 }
 
 test "•	descargarle una cosa"{
 	camion.descargar(knightRider)
-	assert.equals([], camion.carga())
+	assert.notThat(camion.tenesCargado(knightRider))
 }
 
 test "Camion, si tiene cargado el paquete de ladrillos."{
 	camion.cargar(knightRider)
 	assert.notThat(camion.tenesCargado(paqueteLadrillos))
+	paqueteLadrillos.ladrillos(20)
+	camion.cargar(paqueteLadrillos)
+	assert.that(camion.tenesCargado(paqueteLadrillos))
+}
+
+test "El deposito recibe 2 cosas y las guarda"{
+	deposito.recibirCosas([knightRider, bumbleBee])
+	assert.that(deposito.inventarioContenes(knightRider))
+	assert.that(deposito.inventarioContenes(bumbleBee))
+	assert.notThat(deposito.inventarioContenes(paqueteLadrillos))
+}
+
+test "El deposito recibe 2 cosas y las intenta guardar en el camion si puede guarda y luego llena el camion con esas cosas"{
+	paqueteLadrillos.ladrillos(20)
+	deposito.recibirCosas([knightRider, paqueteLadrillos])
+	deposito.llenarCamion()
+	assert.that(camion.tenesCargado(knightRider))
+	deposito.recibirCosas([knightRider, paqueteLadrillos, bumbleBee])
+	deposito.llenarCamion()
+	throwsException("") // no se como validar el error y que pase el test
+}
+
+test "suma de los pesos de las cosas cargadas en el camión."{
+	paqueteLadrillos.ladrillos(20)
+	deposito.recibirCosas([knightRider, paqueteLadrillos])
+	deposito.llenarCamion()
+	assert.equals(540 ,camion.pesoActual())
+}
+
+
+
+
+test "•	Calcular la carga disponible del camión"{
+	paqueteLadrillos.ladrillos(20)
+	deposito.recibirCosas([knightRider, paqueteLadrillos])
+	deposito.llenarCamion()
+	assert.equals(460, camion.cargaDisponible())
+}
+
+test "saber si el camion puede aceptar una cosa, es decir que no supera la carga max"{
+	paqueteLadrillos.ladrillos(20)
+	deposito.recibirCosas([knightRider, paqueteLadrillos])
+	deposito.llenarCamion()
+	assert.equals(460, camion.cargaDisponible())
+	assert.notThat(camion.acepta(bumbleBee))
 	
+}
+
+test "cual es la cosa mas peligrosa que tiene el camión."{
+	paqueteLadrillos.ladrillos(20)
+	deposito.recibirCosas([knightRider, paqueteLadrillos])
+	deposito.llenarCamion()
+	assert.equals(knightRider ,camion.cosaMasPeligrosa())
+}
+
+
+test "saber si un camion puede circular por una ruta"{
+	paqueteLadrillos.ladrillos(2)
+	deposito.recibirCosas([paqueteLadrillos])
+	deposito.llenarCamion()
+	assert.that(camion.puedeCircular())
+	bumbleBee.transformacion(robot)
+	deposito.recibirCosas([bumbleBee])
+	deposito.llenarCamion()
+	assert.notThat(camion.puedeCircular())
+}
+
+test "La motoneta puede cargar hasta 100 kilogramos y sólo puede llevar cosas que tengan hasta 5 puntos de peligrosidad. "{
+	paqueteLadrillos.ladrillos(50)
+	deposito.recibirCosas([paqueteLadrillos])
+	assert.notThat(motoneta.acepta(paqueteLadrillos))
+	deposito.sacarTodo()
+	paqueteLadrillos.ladrillos(10)
+	deposito.recibirCosas([paqueteLadrillos])
+	assert.that(motoneta.acepta(paqueteLadrillos))
+	deposito.llenarMotoneta()
+	assert.that(motoneta.tenesCargado(paqueteLadrillos))
+}
+
+test"El Contenedor portuario tiene un peso de 100 mas la suma de los pesos de las cosas que tiene"{
+	bumbleBee.transformacion(auto)
+	contenedorPortuario.cargar(bumbleBee)
+	contenedorPortuario.cargar(knightRider)
+	paqueteLadrillos.ladrillos(10)
+	contenedorPortuario.cargar(paqueteLadrillos)
+	assert.equals(1420, contenedorPortuario.peso())
+	assert.equals(15, contenedorPortuario.nivelPeligrosidad())
+}
+
+test"el peso del embalaje de seguridad es el peso de lo que envuelve y el nivel de peligrosidad lo mismo."{
+	assert.equals(500, embalajeDeSeguridad.peso(knightRider))
+	assert.equals(5, embalajeDeSeguridad.nivelPeligrosidad(knightRider))
+	bumbleBee.transformacion(robot)
+	assert.equals(800, embalajeDeSeguridad.peso(bumbleBee))
+	assert.equals(15, embalajeDeSeguridad.nivelPeligrosidad(bumbleBee))
 }

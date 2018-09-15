@@ -60,7 +60,7 @@ object contenedorPortuario{
 	method nivelPeligrosidad(){
 		if (carga.isEmpty())
 		return 0
-		else return carga.max{unaCosa=>unaCosa.nivelPeligrosidad()}
+		else return carga.max{unaCosa=>unaCosa.nivelPeligrosidad()}.nivelPeligrosidad()
 		
 	}
 }

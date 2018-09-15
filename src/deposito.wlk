@@ -1,4 +1,5 @@
 import transportes.*
+import cosas.*
 
 object deposito {
 	var cosasDeposito = []
@@ -9,11 +10,25 @@ object deposito {
 	
 	method llenarCamion(){
 		
-		cosasDeposito.forEach({unaCosa=>camion.cargar(unaCosa)})
+		cosasDeposito.forEach({unaCosa=>camion.cargar(unaCosa) 
+		cosasDeposito.remove(unaCosa)
+		})
 		
 	}
 	
 	method sacarTodo(){
-		cosasDeposito.removeAll()
+		cosasDeposito.removeAll(cosasDeposito)
+	}
+	method inventarioContenes(unaCosa) {
+		
+	return	cosasDeposito.contains(unaCosa) 
+	}
+	
+	method llenarMotoneta(){
+		
+		cosasDeposito.forEach({unaCosa=>motoneta.cargar(unaCosa) 
+		cosasDeposito.remove(unaCosa)
+		})
+		
 	}
 }
