@@ -66,7 +66,9 @@ object contenedorPortuario{
 }
 
 object embalajeDeSeguridad{
-	
+	// TODO acá "la cosa" debería ser una atributo
+	// ya que sino yo podria mandar los dos mensajes con cosas diferentes y las respuestas
+	// no serían consistentes
 	method peso(unaCosa){
 		return unaCosa.peso()
 	}

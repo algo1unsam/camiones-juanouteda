@@ -3,7 +3,7 @@ import cosas.*
 import deposito.*
 import ruta.*
 
-
+// TESTS EXCELENTES TESTS
 
 test "•	Knight Rider: pesa 500 kilos y su nivel de peligrosidad es 10 puntos." {
 	assert.equals(500, knightRider.peso())
